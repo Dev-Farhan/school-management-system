@@ -1,75 +1,145 @@
-# Getting Started with Create React App
+# 🏫 School Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern and responsive **School Management System** built using **React (Vite)**, **Supabase**, and **Material UI (Berry Template)**.
+It helps schools efficiently manage students, admissions, teachers, departments, and class data with real-time database integration.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Tech Stack
 
-### `Yarn`
+| Category         | Technology                                  |
+| ---------------- | ------------------------------------------- |
+| Frontend         | React + Vite                                |
+| UI Library       | Material UI (Berry Template)                |
+| Backend / DB     | Supabase (PostgreSQL + Auth)                |
+| State Management | React Hook Form + Context / Redux (if used) |
+| Deployment       | Vercel                                      |
+| Authentication   | Supabase Auth                               |
+| Version Control  | Git & GitHub                                |
 
-Install packages
+---
 
-### `Yarn start`
+## 📂 Folder Structure
 
-Runs the app in the development mode.\
+```
+src/
+ ├── components/        # Reusable UI Components
+ ├── layout/            # App Layout (Header, Sidebar, Breadcrumbs)
+ ├── menu-items/        # Sidebar Menu Configuration
+ ├── pages/ or views/   # Feature pages (Students, Teachers, Admissions)
+ ├── services/          # Supabase client & API helpers
+ ├── utils/             # Helper functions
+ ├── assets/            # Images, icons, and static files
+ ├── App.jsx
+ └── main.jsx
+```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## ⚙️ Features
 
-### `yarn test`
+✅ **Authentication System** (Login / Logout using Supabase)
+✅ **Role-based Access** (Admin, Teacher, Student)
+✅ **Student Management** (Add, View, Edit, Delete students)
+✅ **Admission Module** (New admission tracking)
+✅ **Class & Section Management**
+✅ **Department Management**
+✅ **Dynamic Breadcrumbs** using Berry template
+✅ **Responsive Dashboard**
+✅ **DataGrid Tables** for clean data visualization
+✅ **Deployed on Vercel**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `yarn build`
+## 🛠️ Installation & Setup
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Clone the repository
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/<your-username>/school-management-system.git
+cd school-management-system
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Install dependencies
 
-### `yarn eject`
+```bash
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 3. Setup Supabase
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Create a [Supabase](https://supabase.com) project
+- Copy your project URL and anon key
+- Create `.env` file in root and add:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  ```bash
+  VITE_SUPABASE_URL=your_supabase_url
+  VITE_SUPABASE_ANON_KEY=your_supabase_key
+  ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 4. Run the project
 
-## Learn More
+```bash
+npm run dev
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🧮 Database Tables (Supabase)
 
-### Code Splitting
+| Table Name    | Description                                |
+| ------------- | ------------------------------------------ |
+| `students`    | Stores student personal & academic details |
+| `admissions`  | Handles new admission requests             |
+| `departments` | Department and faculty info                |
+| `classes`     | Class and section info                     |
+| `teachers`    | Teacher profiles and subjects              |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Each table uses **Row Level Security (RLS)** with proper **policies** for secure CRUD operations.
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🖥️ Deployment
 
-### Making a Progressive Web App
+You can easily deploy this project on **Vercel**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+npm i -g vercel
+vercel
+```
 
-### Advanced Configuration
+Then follow on-screen instructions to deploy your live project.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 📸 Screenshots (optional)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+_Add screenshots or dashboard preview here_
+Example:
 
-### `yarn build` fails to minify
+```
+📷 Dashboard Page
+📷 Student List Page
+📷 Add New Student Form
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+Feel free to open a PR or issue on this repository.
+
+---
+
+## 📜 License
+
+This project is **Open Source** under the [MIT License](LICENSE).
+
+---
+
+## 👨‍💻 Developed By
+
+**Mohammad Farhan**
+Frontend Developer | MERN Stack Enthusiast
+🌐 [Portfolio](#) | 💼 [LinkedIn](#) | 🐙 [GitHub](https://github.com/Dev-Farhan)
