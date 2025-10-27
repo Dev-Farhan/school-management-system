@@ -3,10 +3,13 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import AddPage from '../views/admissionForm/add';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 const AdmissionForm = Loadable(lazy(() => import('views/admissionForm')));
+const SessionPage = Loadable(lazy(() => import('views/session')));
+const SessionAddPage = Loadable(lazy(() => import('views/session/add')));
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
@@ -50,7 +53,13 @@ const MainRoutes = {
     {
       path: '/admission-form',
       element: <AdmissionForm />
-    }
+    },
+    {
+      path: '/admission-form/add',
+      element: <AddPage />
+    },
+    { path: '/session', element: <SessionPage /> },
+    { path: '/session/add', element: <SessionAddPage /> }
   ]
 };
 
