@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useAuth } from 'contexts/AuthContext';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
@@ -20,6 +21,17 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 
 export default function Login() {
   const downMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (user) {
+      // Redirect to the page they tried to visit or to dashboard
+      const from = location.state?.from?.pathname || '/';
+      navigate(from);
+    }
+  }, [user, navigate, location]);
 
   return (
     <AuthWrapper1>

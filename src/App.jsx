@@ -8,19 +8,21 @@ import NavigationScroll from 'layout/NavigationScroll';
 
 import ThemeCustomization from 'themes';
 import { Toaster } from 'react-hot-toast';
-// auth provider
+import { AuthProvider } from './contexts/AuthContext';
 
 // ==============================|| APP ||============================== //
 
 export default function App() {
   return (
-    <ThemeCustomization>
-      <NavigationScroll>
-        <>
-          <RouterProvider router={router} />
-        </>
-      </NavigationScroll>
-      <Toaster position="bottom-right" />
-    </ThemeCustomization>
+    <AuthProvider>
+      <ThemeCustomization>
+        <NavigationScroll>
+          <>
+            <RouterProvider router={router} />
+          </>
+        </NavigationScroll>
+        <Toaster position="bottom-right" />
+      </ThemeCustomization>
+    </AuthProvider>
   );
 }

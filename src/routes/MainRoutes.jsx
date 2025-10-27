@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import PrivateRoute from 'components/PrivateRoute';
 import AddPage from '../views/admissionForm/add';
 
 // dashboard routing
@@ -23,7 +24,11 @@ const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 
 const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: (
+    <PrivateRoute>
+      <MainLayout />
+    </PrivateRoute>
+  ),
   children: [
     {
       path: '/',
