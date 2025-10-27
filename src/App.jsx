@@ -7,7 +7,7 @@ import router from 'routes';
 import NavigationScroll from 'layout/NavigationScroll';
 
 import ThemeCustomization from 'themes';
-
+import { Toaster } from 'react-hot-toast';
 // auth provider
 
 // ==============================|| APP ||============================== //
@@ -20,6 +20,7 @@ export default function App() {
           <RouterProvider router={router} />
         </>
       </NavigationScroll>
+      <Toaster position="bottom-right" />
     </ThemeCustomization>
   );
 }
