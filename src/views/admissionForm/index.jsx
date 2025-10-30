@@ -6,7 +6,7 @@ import { DataGrid } from '@mui/x-data-grid';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { useNavigate } from 'react-router-dom';
-import { IconUserPlus } from '@tabler/icons-react';
+import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { supabase } from '../../utils/supabaseClient';
@@ -42,8 +42,8 @@ export default function AdmissionForm() {
     <MainCard>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h3">All Admission Applications</Typography>
-        <Button variant="contained" color="secondary" startIcon={<IconUserPlus />} onClick={handleAddNew}>
-          New Admission
+        <Button variant="contained" color="secondary" startIcon={<IconPlus />} onClick={handleAddNew}>
+          Add
         </Button>
       </Box>
       <Grid container spacing={2}>

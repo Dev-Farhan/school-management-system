@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Button, Grid, Box } from '@mui/material';
+import { TextField, Button, Grid, Box, FormControlLabel, Switch } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -26,7 +26,8 @@ const schema = yup.object().shape({
         dayjs(value).isAfter(dayjs(session_start_date)) ||
         dayjs(value).isSame(dayjs(session_start_date), 'day')
       );
-    })
+    }),
+  isactive: yup.boolean().required('Status is required')
 });
 
 export default function SessionAddPage() {
@@ -39,9 +40,10 @@ export default function SessionAddPage() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      session_name: '',
+      name: '',
       session_start_date: null,
-      session_end_date: null
+      session_end_date: null,
+      isactive: true
     }
   });
 
@@ -49,7 +51,8 @@ export default function SessionAddPage() {
     const formattedData = {
       name: data.session_name,
       start_date: dayjs(data.session_start_date).format('YYYY-MM-DD'),
-      end_date: dayjs(data.session_end_date).format('YYYY-MM-DD')
+      end_date: dayjs(data.session_end_date).format('YYYY-MM-DD'),
+      isactive: data.isactive
     };
 
     console.log('✅ Session Data:', formattedData);
@@ -62,7 +65,7 @@ export default function SessionAddPage() {
 
     if (error) {
       console.error('❌ Supabase insert error:', error.message);
-      toast.error('Failed to add session. Try again!');
+      toast.error(error.message || 'Error adding session');
     } else {
       toast.success('Session added successfully 🎉');
       reset();
@@ -130,6 +133,20 @@ export default function SessionAddPage() {
                       }
                     }}
                     onChange={(newValue) => field.onChange(newValue)}
+                  />
+                )}
+              />
+            </Grid>
+
+            {/* Active Toggle */}
+            <Grid item size={{ lg: 4, md: 6, sm: 12, xs: 12 }}>
+              <Controller
+                name="isactive"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={<Switch checked={!!field.value} onChange={(e) => field.onChange(e.target.checked)} color="secondary" />}
+                    label="Active"
                   />
                 )}
               />
