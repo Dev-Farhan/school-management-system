@@ -11,6 +11,8 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 const AdmissionForm = Loadable(lazy(() => import('views/admissionForm')));
 const SessionPage = Loadable(lazy(() => import('views/session')));
 const SessionAddPage = Loadable(lazy(() => import('views/session/add')));
+const StudentsPage = Loadable(lazy(() => import('views/students/student/index.jsx')));
+const StudentsAddPage = Loadable(lazy(() => import('views/students/student/add.jsx')));
 
 // utilities routing
 const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
@@ -39,6 +41,23 @@ const MainRoutes = {
       children: [
         {
           path: 'default',
+          element: <DashboardDefault />
+        }
+      ]
+    },
+    {
+      path: 'students',
+      children: [
+        {
+          path: 'all-students',
+          element: <StudentsPage />
+        },
+        {
+          path: 'add-student',
+          element: <StudentsAddPage />
+        },
+        {
+          path: 'new-admission',
           element: <DashboardDefault />
         }
       ]
