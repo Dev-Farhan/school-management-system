@@ -4,23 +4,18 @@ import { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import PrivateRoute from 'components/PrivateRoute';
-import AddPage from '../views/admissionForm/add';
+import RoleRoute from 'components/RoleRoute';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-const AdmissionForm = Loadable(lazy(() => import('views/admissionForm')));
-const SessionPage = Loadable(lazy(() => import('views/session')));
-const SessionAddPage = Loadable(lazy(() => import('views/session/add')));
-const StudentsPage = Loadable(lazy(() => import('views/students/student/index.jsx')));
-const StudentsAddPage = Loadable(lazy(() => import('views/students/student/add.jsx')));
-
-// utilities routing
-const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
-const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
-const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
-
-// sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const RoleBasedDashboard = Loadable(lazy(() => import('views/dashboard/RoleBasedDashboard')));
+const SuperAdminDashboard = Loadable(lazy(() => import('views/dashboard/SuperAdmin')));
+const SchoolAdminDashboard = Loadable(lazy(() => import('views/dashboard/SchoolAdmin')));
+const Plans = Loadable(lazy(() => import('views/super-admin/plans')));
+const Schools = Loadable(lazy(() => import('views/super-admin/schools')));
+const SessionsPage = Loadable(lazy(() => import('views/school/academic-core/sessions')));
+const ClassesPage = Loadable(lazy(() => import('views/school/academic-core/classes')));
+const SectionsPage = Loadable(lazy(() => import('views/school/academic-core/section')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -34,56 +29,66 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: <DashboardDefault />
+      element: <RoleBasedDashboard />
     },
     {
       path: 'dashboard',
       children: [
+        // {
+        //   path: 'default',
+        //   element: <RoleBasedDashboard />
+        // },
         {
-          path: 'default',
-          element: <DashboardDefault />
+          path: 'super',
+          element: (
+            <RoleRoute allowedRoles={['super_admin']}>
+              <SuperAdminDashboard />
+            </RoleRoute>
+          )
+        },
+        {
+          path: 'school',
+          element: (
+            <RoleRoute allowedRoles={['school_admin', 'super_admin']}>
+              <SchoolAdminDashboard />
+            </RoleRoute>
+          )
         }
       ]
     },
     {
-      path: 'students',
+      path: 'plans',
+      element: (
+        <RoleRoute allowedRoles={['super_admin']}>
+          <Plans />
+        </RoleRoute>
+      )
+    },
+    {
+      path: 'schools',
+      element: (
+        <RoleRoute allowedRoles={['super_admin']}>
+          <Schools />
+        </RoleRoute>
+      )
+    },
+    {
+      path: 'academic-core',
       children: [
         {
-          path: 'all-students',
-          element: <StudentsPage />
+          path: 'sessions',
+          element: <SessionsPage />
         },
         {
-          path: 'add-student',
-          element: <StudentsAddPage />
+          path: 'classes',
+          element: <ClassesPage />
         },
         {
-          path: 'new-admission',
-          element: <DashboardDefault />
-        }
+          path: 'sections',
+          element: <SectionsPage />
+        },
       ]
-    },
-    {
-      path: 'typography',
-      element: <UtilsTypography />
-    },
-    {
-      path: 'color',
-      element: <UtilsColor />
-    },
-    {
-      path: 'shadow',
-      element: <UtilsShadow />
-    },
-    {
-      path: '/admission-form',
-      element: <AdmissionForm />
-    },
-    {
-      path: '/admission-form/add',
-      element: <AddPage />
-    },
-    { path: '/session', element: <SessionPage /> },
-    { path: '/session/add', element: <SessionAddPage /> }
+    }
   ]
 };
 

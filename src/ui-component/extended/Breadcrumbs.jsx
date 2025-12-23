@@ -12,7 +12,8 @@ import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 import Box from '@mui/material/Box';
 
 // project imports
-import navigation from 'menu-items';
+import { getNavigationByRole } from 'menu-items';
+import { useAuth } from 'contexts/AuthContext';
 
 // assets
 import { IconChevronRight, IconTallymark1 } from '@tabler/icons-react';
@@ -50,6 +51,8 @@ export default function Breadcrumbs({
 }) {
   const theme = useTheme();
   const location = useLocation();
+  const { profile } = useAuth();
+  const navigation = getNavigationByRole(profile?.role);
   const [main, setMain] = useState();
   const [item, setItem] = useState();
 
@@ -83,7 +86,7 @@ export default function Breadcrumbs({
       }
       return false;
     });
-  });
+  }, [customLocation, navigation]);
 
   // set active item state
   const getCollapse = (menu) => {

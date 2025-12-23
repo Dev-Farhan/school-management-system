@@ -59,31 +59,65 @@ export default function AuthLogin() {
     control,
     handleSubmit,
     formState: { errors },
-    reset
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      email: 'aimwinschool@gmail.com',
-      password: 'aimwin',
-      remember: true
+      email: 'superadmin@edutrack.com',
+      password: 'super123',
+      remember: false
     }
   });
 
   const onSubmit = async (formData) => {
     try {
       const { email, password } = formData;
-      let { error } = await supabase.auth.signInWithPassword({
+
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
+
       if (error) {
-        toast.error(error?.message);
-        console.error('Signin Error:', error.message);
+        toast.error(error.message);
         return;
       }
-      reset();
-      toast.success('User login succesfully');
-      navigate('/');
+
+      const userId = authData?.user?.id;
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role, school_id')
+        .eq('id', userId)
+        .single();
+
+      if (profileError) {
+        toast.error(profileError.message);
+        return;
+      }
+
+      if (!profile) {
+        toast.error('Profile not found');
+        return;
+      }
+
+      if (authData.session) {
+        document.cookie = `auth_token=${authData.session.access_token}; path=/; max-age=${authData.session.expires_in}`;
+        document.cookie = `user_role=${profile.role}; path=/; max-age=${authData.session.expires_in}`;
+
+        try {
+          localStorage.setItem('user_role', profile.role);
+          if (profile.school_id) localStorage.setItem('school_id', String(profile.school_id));
+        } catch (storageError) {
+          console.error('Persist role error:', storageError);
+        }
+      }
+
+      if (profile.role === 'super_admin') {
+        navigate('/dashboard/super');
+      } else if (profile.role === 'school_admin') {
+        navigate('/dashboard/school');
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       toast.error(err?.message);
     }
