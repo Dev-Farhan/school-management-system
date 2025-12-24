@@ -74,7 +74,9 @@ export default function ProfileSection() {
   }, [open]);
 
   const handleLogout = async () => {
+    console.log('handleLogout called');
     try {
+      console.log('signOut called');
       await signOut();
       navigate('/login');
     } catch (error) {

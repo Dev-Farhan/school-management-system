@@ -1,6 +1,5 @@
 import dashboard from './dashboard';
 import admissionForm from './admissionForm';
-import session from './session';
 import students from './students';
 import plans from './plans';
 import schools from './schools';
@@ -11,7 +10,7 @@ const dashboardByRole = (role) => {
   const isSuperAdmin = role === 'super_admin';
   const isSchoolAdmin = role === 'school_admin';
   const label = isSuperAdmin ? 'Super Admin Dashboard' : isSchoolAdmin ? 'School Admin Dashboard' : 'Dashboard';
-  const url = isSuperAdmin ? '/dashboard/super' : isSchoolAdmin ? '/dashboard/school' : '/dashboard/default';
+  const url = '/';
 
   return {
     ...dashboard,

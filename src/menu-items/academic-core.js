@@ -17,27 +17,12 @@ const academicCore = {
             icon: icons.IconSchool,
             children: [
                 {
-                    id: 'sessions',
-                    title: 'Sessions',
+                    id: 'academic-setup',
+                    title: 'Academic Setup',
                     type: 'item',
-                    url: '/academic-core/sessions',
+                    url: '/academic-core/academic-setup',
                     breadcrumbs: false
                 },
-                {
-                    id: 'classes',
-                    title: 'Classes',
-                    type: 'item',
-                    url: '/academic-core/classes',
-                    breadcrumbs: false
-                },
-                {
-                    id: 'sections',
-                    title: 'Sections',
-                    type: 'item',
-                    url: '/academic-core/sections',
-                    breadcrumbs: false
-                },
-
             ]
         }
     ]

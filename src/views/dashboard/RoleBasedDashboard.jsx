@@ -34,7 +34,7 @@ export default function RoleBasedDashboard() {
     >
       {profile?.role === 'super_admin' && <SuperAdminDashboard />}
       {profile?.role === 'school_admin' && <SchoolAdminDashboard />}
-      {!profile?.role && <DashboardDefault />}
+      {/* {!profile?.role && <DashboardDefault />} */}
     </Suspense>
   );
 }

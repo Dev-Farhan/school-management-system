@@ -16,6 +16,7 @@ const Schools = Loadable(lazy(() => import('views/super-admin/schools')));
 const SessionsPage = Loadable(lazy(() => import('views/school/academic-core/sessions')));
 const ClassesPage = Loadable(lazy(() => import('views/school/academic-core/classes')));
 const SectionsPage = Loadable(lazy(() => import('views/school/academic-core/section')));
+const AcademicSetup = Loadable(lazy(() => import('views/school/academic-core/academic-setup')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -30,31 +31,6 @@ const MainRoutes = {
     {
       path: '/',
       element: <RoleBasedDashboard />
-    },
-    {
-      path: 'dashboard',
-      children: [
-        // {
-        //   path: 'default',
-        //   element: <RoleBasedDashboard />
-        // },
-        {
-          path: 'super',
-          element: (
-            <RoleRoute allowedRoles={['super_admin']}>
-              <SuperAdminDashboard />
-            </RoleRoute>
-          )
-        },
-        {
-          path: 'school',
-          element: (
-            <RoleRoute allowedRoles={['school_admin', 'super_admin']}>
-              <SchoolAdminDashboard />
-            </RoleRoute>
-          )
-        }
-      ]
     },
     {
       path: 'plans',
@@ -76,17 +52,11 @@ const MainRoutes = {
       path: 'academic-core',
       children: [
         {
-          path: 'sessions',
-          element: <SessionsPage />
+          path: 'academic-setup',
+          element: <AcademicSetup />
         },
-        {
-          path: 'classes',
-          element: <ClassesPage />
-        },
-        {
-          path: 'sections',
-          element: <SectionsPage />
-        },
+
+
       ]
     }
   ]

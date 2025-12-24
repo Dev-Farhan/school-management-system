@@ -3,8 +3,8 @@ import Loader from 'ui-component/Loader';
 import { useAuth } from 'contexts/AuthContext';
 
 const resolveDefaultPath = (role) => {
-  if (role === 'super_admin') return '/dashboard/super';
-  if (role === 'school_admin') return '/dashboard/school';
+  if (role === 'super_admin') return '/dashboard';
+  if (role === 'school_admin') return '/dashboard';
   return '/';
 };
 

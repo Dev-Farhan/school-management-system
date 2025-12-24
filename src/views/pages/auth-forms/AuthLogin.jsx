@@ -111,13 +111,9 @@ export default function AuthLogin() {
         }
       }
 
-      if (profile.role === 'super_admin') {
-        navigate('/dashboard/super');
-      } else if (profile.role === 'school_admin') {
-        navigate('/dashboard/school');
-      } else {
-        navigate('/');
-      }
+
+      navigate('/');
+
     } catch (err) {
       toast.error(err?.message);
     }
