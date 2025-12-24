@@ -55,6 +55,10 @@ const MainRoutes = {
           path: 'academic-setup',
           element: <AcademicSetup />
         },
+        {
+          path: 'sessions',
+          element: <SessionsPage />
+        },
 
 
       ]

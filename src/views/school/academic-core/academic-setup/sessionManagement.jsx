@@ -22,12 +22,12 @@ const schema = yup.object().shape({
         .string()
         .required('Academic year name is required')
         .matches(/^\d{4}-\d{4}$/, 'Format must be YYYY-YYYY (e.g., 2025-2026)'),
-    startDate: yup.date().required('Start date is required').typeError('Invalid date'),
-    endDate: yup
+    start_date: yup.date().required('Start date is required').typeError('Invalid date'),
+    end_date: yup
         .date()
         .required('End date is required')
         .typeError('Invalid date')
-        .min(yup.ref('startDate'), 'End date must be after start date'),
+        .min(yup.ref('start_date'), 'End date must be after start date'),
 });
 
 // --- Sub-component: Unified Modal ---
@@ -41,8 +41,8 @@ const AcademicYearModal = ({ open, onClose, onSave, isEditing, defaultValues }) 
         resolver: yupResolver(schema),
         defaultValues: {
             name: '',
-            startDate: '',
-            endDate: ''
+            start_date: '',
+            end_date: ''
         }
     });
 
@@ -82,7 +82,7 @@ const AcademicYearModal = ({ open, onClose, onSave, isEditing, defaultValues }) 
                         />
                         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
                             <Controller
-                                name="startDate"
+                                name="start_date"
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -91,13 +91,13 @@ const AcademicYearModal = ({ open, onClose, onSave, isEditing, defaultValues }) 
                                         type="date"
                                         InputLabelProps={{ shrink: true }}
                                         fullWidth
-                                        error={!!errors.startDate}
-                                        helperText={errors.startDate?.message}
+                                        error={!!errors.start_date}
+                                        helperText={errors.start_date?.message}
                                     />
                                 )}
                             />
                             <Controller
-                                name="endDate"
+                                name="end_date"
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -106,8 +106,8 @@ const AcademicYearModal = ({ open, onClose, onSave, isEditing, defaultValues }) 
                                         type="date"
                                         InputLabelProps={{ shrink: true }}
                                         fullWidth
-                                        error={!!errors.endDate}
-                                        helperText={errors.endDate?.message}
+                                        error={!!errors.end_date}
+                                        helperText={errors.end_date?.message}
                                     />
                                 )}
                             />
@@ -126,25 +126,44 @@ const AcademicYearModal = ({ open, onClose, onSave, isEditing, defaultValues }) 
 };
 
 // --- Main Component ---
-const SessionManagement = ({ academicYears = [], handleDeleteYear, handleSetCurrent, refreshData }) => {
+const SessionManagement = () => {
     const { profile } = useAuth();
     const [modalOpen, setModalOpen] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null);
+    const [academicYears, setAcademicYears] = useState([]);
 
-    const handleSaveYear = async (data) => {
+
+    useEffect(() => {
+        getAcademicYears();
+    }, []);
+
+    const getAcademicYears = async () => {
+        const { data, error } = await supabase.from('academic_sessions').select('*');
         console.log('data', data);
+        setAcademicYears(data);
+        if (error) {
+            toast.error(error.message);
+        }
+    };
+    const handleSaveYear = async (data) => {
         const payload = {
             ...data,
             school_id: profile?.school_id,
         };
-        console.log('payload', payload);
+
         let result;
         if (editingId) {
-            result = await supabase.from('academic_sessions').update(payload).eq('id', editingId);
+            // Use .update() if we are editing
+            result = await supabase
+                .from('academic_sessions')
+                .update(payload)
+                .eq('id', editingId);
         } else {
-            result = await supabase.from('academic_sessions').insert([payload]);
-            console.log('result insert', result);
+            // Use .insert() if we are creating new
+            result = await supabase
+                .from('academic_sessions')
+                .insert([payload]);
         }
 
         if (result.error) {
@@ -152,13 +171,13 @@ const SessionManagement = ({ academicYears = [], handleDeleteYear, handleSetCurr
         } else {
             toast.success(`Academic year ${editingId ? 'updated' : 'added'} successfully`);
             setModalOpen(false);
-            if (refreshData) refreshData(); // Call a function to re-fetch the list
+            getAcademicYears();
         }
     };
 
     const handleOpenAdd = () => {
         setEditingId(null);
-        setSelectedRow({ name: '', startDate: '', endDate: '' });
+        setSelectedRow({ name: '', start_date: '', end_date: '' });
         setModalOpen(true);
     };
 
@@ -171,13 +190,13 @@ const SessionManagement = ({ academicYears = [], handleDeleteYear, handleSetCurr
     const columns = [
         { field: 'name', headerName: 'Academic Year', flex: 1 },
         {
-            field: 'startDate',
+            field: 'start_date',
             headerName: 'Start Date',
             flex: 1,
             valueFormatter: (params) => params.value ? new Date(params.value).toLocaleDateString() : ''
         },
         {
-            field: 'endDate',
+            field: 'end_date',
             headerName: 'End Date',
             flex: 1,
             valueFormatter: (params) => params.value ? new Date(params.value).toLocaleDateString() : ''
@@ -200,7 +219,7 @@ const SessionManagement = ({ academicYears = [], handleDeleteYear, handleSetCurr
                     <IconButton size="small" onClick={() => handleOpenEdit(params.row)}>
                         <PencilIcon fontSize="small" />
                     </IconButton>
-                    <IconButton size="small" color="error" onClick={() => handleDeleteYear(params.row.id)} disabled={params.row.isCurrent}>
+                    <IconButton size="small" color="error" onClick={() => { }} disabled={params.row.isCurrent}>
                         <TrashIcon fontSize="small" />
                     </IconButton>
                 </Stack>
@@ -216,7 +235,7 @@ const SessionManagement = ({ academicYears = [], handleDeleteYear, handleSetCurr
                     action={<Button variant="contained" color="secondary" startIcon={<PlusIcon />} onClick={handleOpenAdd}>Add Academic Year</Button>}
                 />
                 <Box sx={{ height: 400, width: '100%' }}>
-                    <DataGrid rows={academicYears} columns={columns} disableRowSelectionOnClick />
+                    <DataGrid rows={academicYears || []} columns={columns} disableRowSelectionOnClick />
                 </Box>
             </Card>
 
