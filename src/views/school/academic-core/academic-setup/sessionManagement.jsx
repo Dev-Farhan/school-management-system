@@ -15,6 +15,7 @@ import * as yup from 'yup';
 import { useAuth } from 'contexts/AuthContext';
 import { supabase } from '../../../../utils/supabaseClient';
 import toast from 'react-hot-toast';
+import DeleteConfirmDialog from 'ui-component/modals/DeleteConfirmDialog';
 
 // --- Validation Schema ---
 const schema = yup.object().shape({
@@ -132,6 +133,8 @@ const SessionManagement = () => {
     const [editingId, setEditingId] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null);
     const [academicYears, setAcademicYears] = useState([]);
+const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
 
 
     useEffect(() => {
@@ -187,26 +190,58 @@ const SessionManagement = () => {
         setModalOpen(true);
     };
 
+const handleToogle = async (row) => {
+    const payload = {
+        ...row,
+        is_active: !row.is_active,
+    };
+    const { data, error } = await supabase.from('academic_sessions').update(payload).eq('id', row.id);
+    if (error) {
+        toast.error(error.message);
+    } else {
+        toast.success(`Academic year ${row.name} ${row.is_active ? 'activated' : 'deactivated'} successfully`);
+        getAcademicYears();
+    }
+}
+
+    const handleOpenDelete = (row) => {
+        setSelectedRow(row);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        const { error } = await supabase
+            .from('academic_sessions')
+            .delete()
+            .eq('id', selectedRow.id);
+
+        if (error) {
+            toast.error(error.message);
+        } else {
+            toast.success(`Deleted successfully`);
+            getAcademicYears();
+        }
+        setDeleteDialogOpen(false);
+    };
+
     const columns = [
         { field: 'name', headerName: 'Academic Year', flex: 1 },
         {
             field: 'start_date',
             headerName: 'Start Date',
             flex: 1,
-            valueFormatter: (params) => params.value ? new Date(params.value).toLocaleDateString() : ''
         },
         {
             field: 'end_date',
             headerName: 'End Date',
             flex: 1,
-            valueFormatter: (params) => params.value ? new Date(params.value).toLocaleDateString() : ''
         },
         {
-            field: 'status',
+            field: 'is_active',
             headerName: 'Status',
             width: 120,
             renderCell: (params) => (
-                <Chip label={params.value || 'inactive'} size="small" color={params.value === 'active' ? 'success' : 'default'} />
+                <Switch checked={params.value} color='secondary' onChange={()=>handleToogle(params.row)}/>
             )
         },
         {
@@ -215,12 +250,12 @@ const SessionManagement = () => {
             width: 120,
             align: 'right',
             renderCell: (params) => (
-                <Stack direction="row" spacing={1}>
+                <Stack direction="row" spacing={1} sx={{mt:1}}>
                     <IconButton size="small" onClick={() => handleOpenEdit(params.row)}>
                         <PencilIcon fontSize="small" />
                     </IconButton>
                     <IconButton size="small" color="error" onClick={() => { }} disabled={params.row.isCurrent}>
-                        <TrashIcon fontSize="small" />
+                        <TrashIcon fontSize="small" onClick={()=>handleOpenDelete(params.row)}/>
                     </IconButton>
                 </Stack>
             )
@@ -245,6 +280,14 @@ const SessionManagement = () => {
                 onSave={handleSaveYear}
                 isEditing={!!editingId}
                 defaultValues={selectedRow}
+            />
+
+            <DeleteConfirmDialog 
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+                onConfirm={handleConfirmDelete}
+                title="Delete Academic Year"
+                message={`Are you sure you want to delete "${selectedRow?.name}"? All associated data may be affected.`}
             />
         </Stack>
     );
