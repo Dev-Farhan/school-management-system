@@ -77,8 +77,12 @@ export default function ProfileSection() {
     console.log('handleLogout called');
     try {
       console.log('signOut called');
-      await signOut();
-      navigate('/login');
+      const result = await signOut();
+      if (result) {
+        navigate('/login');
+      } else {
+        toast.error(result?.message || 'Unable to logout. Please try again.');
+      }
     } catch (error) {
       console.error('Logout failed:', error);
       toast.error('Unable to logout. Please try again.');

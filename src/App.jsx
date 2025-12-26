@@ -9,12 +9,14 @@ import NavigationScroll from 'layout/NavigationScroll';
 import ThemeCustomization from 'themes';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
+import { SessionProvider } from './contexts/SessionContext';
 
 // ==============================|| APP ||============================== //
 
 export default function App() {
   return (
     <AuthProvider>
+      <SessionProvider>
       <ThemeCustomization>
         <NavigationScroll>
           <>
@@ -23,6 +25,7 @@ export default function App() {
         </NavigationScroll>
         <Toaster position="bottom-right" />
       </ThemeCustomization>
+      </SessionProvider>
     </AuthProvider>
   );
 }

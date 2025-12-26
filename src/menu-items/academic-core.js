@@ -23,13 +23,7 @@ const academicCore = {
                     url: '/academic-core/academic-setup',
                     breadcrumbs: false
                 },
-                {
-                    id: 'session',
-                    title: 'Sessions',
-                    type: 'item',
-                    url: '/academic-core/sessions',
-                    breadcrumbs: false
-                }
+
             ]
         }
     ]

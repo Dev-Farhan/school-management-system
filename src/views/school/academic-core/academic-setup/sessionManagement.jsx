@@ -16,6 +16,7 @@ import { useAuth } from 'contexts/AuthContext';
 import { supabase } from '../../../../utils/supabaseClient';
 import toast from 'react-hot-toast';
 import DeleteConfirmDialog from 'ui-component/modals/DeleteConfirmDialog';
+import { getErrorMessage } from '../../../../helper/getErrorMessage';
 
 // --- Validation Schema ---
 const schema = yup.object().shape({
@@ -133,7 +134,7 @@ const SessionManagement = () => {
     const [editingId, setEditingId] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null);
     const [academicYears, setAcademicYears] = useState([]);
-const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
 
 
@@ -146,7 +147,8 @@ const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
         console.log('data', data);
         setAcademicYears(data);
         if (error) {
-            toast.error(error.message);
+            const msg = getErrorMessage(error)
+            toast.error(msg || 'Something went wrong');
         }
     };
     const handleSaveYear = async (data) => {
@@ -170,7 +172,8 @@ const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
         }
 
         if (result.error) {
-            toast.error(result.error.message);
+            const msg = getErrorMessage(result.error)
+            toast.error(msg || 'Something went wrong');
         } else {
             toast.success(`Academic year ${editingId ? 'updated' : 'added'} successfully`);
             setModalOpen(false);
@@ -190,19 +193,20 @@ const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
         setModalOpen(true);
     };
 
-const handleToogle = async (row) => {
-    const payload = {
-        ...row,
-        is_active: !row.is_active,
-    };
-    const { data, error } = await supabase.from('academic_sessions').update(payload).eq('id', row.id);
-    if (error) {
-        toast.error(error.message);
-    } else {
-        toast.success(`Academic year ${row.name} ${row.is_active ? 'activated' : 'deactivated'} successfully`);
-        getAcademicYears();
+    const handleToogle = async (row) => {
+        const payload = {
+            ...row,
+            is_active: !row.is_active,
+        };
+        const { data, error } = await supabase.from('academic_sessions').update(payload).eq('id', row.id);
+        if (error) {
+            const msg = getErrorMessage(error)
+            toast.error(msg || 'Something went wrong');
+        } else {
+            toast.success(`Academic year ${row.name} ${row.is_active ? 'activated' : 'deactivated'} successfully`);
+            getAcademicYears();
+        }
     }
-}
 
     const handleOpenDelete = (row) => {
         setSelectedRow(row);
@@ -216,7 +220,8 @@ const handleToogle = async (row) => {
             .eq('id', selectedRow.id);
 
         if (error) {
-            toast.error(error.message);
+            const msg = getErrorMessage(error)
+            toast.error(msg || 'Something went wrong');
         } else {
             toast.success(`Deleted successfully`);
             getAcademicYears();
@@ -241,7 +246,7 @@ const handleToogle = async (row) => {
             headerName: 'Status',
             width: 120,
             renderCell: (params) => (
-                <Switch checked={params.value} color='secondary' onChange={()=>handleToogle(params.row)}/>
+                <Switch checked={params.value} color='secondary' onChange={() => handleToogle(params.row)} />
             )
         },
         {
@@ -250,12 +255,12 @@ const handleToogle = async (row) => {
             width: 120,
             align: 'right',
             renderCell: (params) => (
-                <Stack direction="row" spacing={1} sx={{mt:1}}>
+                <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                     <IconButton size="small" onClick={() => handleOpenEdit(params.row)}>
                         <PencilIcon fontSize="small" />
                     </IconButton>
                     <IconButton size="small" color="error" onClick={() => { }} disabled={params.row.isCurrent}>
-                        <TrashIcon fontSize="small" onClick={()=>handleOpenDelete(params.row)}/>
+                        <TrashIcon fontSize="small" onClick={() => handleOpenDelete(params.row)} />
                     </IconButton>
                 </Stack>
             )
@@ -282,7 +287,7 @@ const handleToogle = async (row) => {
                 defaultValues={selectedRow}
             />
 
-            <DeleteConfirmDialog 
+            <DeleteConfirmDialog
                 open={deleteDialogOpen}
                 onClose={() => setDeleteDialogOpen(false)}
                 onConfirm={handleConfirmDelete}

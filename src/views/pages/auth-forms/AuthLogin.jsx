@@ -100,8 +100,6 @@ export default function AuthLogin() {
       }
 
       if (authData.session) {
-        document.cookie = `auth_token=${authData.session.access_token}; path=/; max-age=${authData.session.expires_in}`;
-        document.cookie = `user_role=${profile.role}; path=/; max-age=${authData.session.expires_in}`;
 
         try {
           localStorage.setItem('user_role', profile.role);
