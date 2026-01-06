@@ -13,9 +13,6 @@ const SuperAdminDashboard = Loadable(lazy(() => import('views/dashboard/SuperAdm
 const SchoolAdminDashboard = Loadable(lazy(() => import('views/dashboard/SchoolAdmin')));
 const Plans = Loadable(lazy(() => import('views/super-admin/plans')));
 const Schools = Loadable(lazy(() => import('views/super-admin/schools')));
-const SessionsPage = Loadable(lazy(() => import('views/school/academic-core/sessions')));
-const ClassesPage = Loadable(lazy(() => import('views/school/academic-core/classes')));
-const SectionsPage = Loadable(lazy(() => import('views/school/academic-core/section')));
 const AcademicSetup = Loadable(lazy(() => import('views/school/academic-core/academic-setup')));
 
 // ==============================|| MAIN ROUTING ||============================== //
