@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 
 // material-ui
 import Grid from '@mui/material/Grid';
-
+import { Box, Typography, Paper, Button } from '@mui/material';
+import ConstructionIcon from '@mui/icons-material/Construction';
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
@@ -27,7 +28,7 @@ export default function Dashboard() {
 
   return (
     <Grid container spacing={gridSpacing}>
-      <Grid size={12}>
+      {/* <Grid size={12}>
         <Grid container spacing={gridSpacing}>
           <Grid size={{ lg: 4, md: 6, sm: 6, xs: 12 }}>
             <EarningCard isLoading={isLoading} />
@@ -63,6 +64,39 @@ export default function Dashboard() {
             <PopularCard isLoading={isLoading} />
           </Grid>
         </Grid>
+      </Grid> */}
+      <Grid size={12}>
+        <Box
+          sx={{
+            height: '80vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 2
+          }}
+        >
+          <Paper
+            elevation={3}
+            sx={{
+              p: 5,
+              textAlign: 'center',
+              borderRadius: 3,
+              maxWidth: 500
+            }}
+          >
+            <ConstructionIcon color="warning" sx={{ fontSize: 60, mb: 2 }} />
+            <Typography variant="h4" fontWeight={600} gutterBottom>
+              Dashboard Under Development
+            </Typography>
+            <Typography variant="body1" color="text.secondary" mb={3}>
+              We’re currently working on building this section to give you a better experience. Please check back soon!
+            </Typography>
+            {/* <Button variant="contained" color="primary" onClick={() => window.location.reload()}>
+              Refresh
+            </Button> */}
+          </Paper>
+        </Box>
       </Grid>
     </Grid>
   );

@@ -1,10 +1,13 @@
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useAuth } from 'contexts/AuthContext';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { School } from '@mui/icons-material';
+import Box from '@mui/material/Box';
 
 // project imports
 import AuthWrapper1 from './AuthWrapper1';
@@ -18,6 +21,17 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 
 export default function Login() {
   const downMD = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (user) {
+      // Redirect to the page they tried to visit or to dashboard
+      const from = location.state?.from?.pathname || '/';
+      navigate(from);
+    }
+  }, [user, navigate, location]);
 
   return (
     <AuthWrapper1>
@@ -27,10 +41,34 @@ export default function Login() {
             <Grid sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <AuthCardWrapper>
                 <Grid container spacing={2} sx={{ alignItems: 'center', justifyContent: 'center' }}>
-                  <Grid sx={{ mb: 3 }}>
-                    <Link to="#" aria-label="logo">
-                      <Logo />
-                    </Link>
+                  <Grid>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'center' }}>
+                      <School sx={{ fontSize: 20, color: 'secondary.main' }} />
+                      <Box>
+                        <Typography
+                          variant="h2"
+                          sx={{
+                            fontWeight: 'bold',
+                            color: 'secondary.main',
+                            letterSpacing: '0.5px',
+                            fontSize: { xs: '1rem', sm: '1rem' }
+                          }}
+                        >
+                          EduTrack
+                        </Typography>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
+                            color: 'text.secondary',
+                            letterSpacing: '1px',
+                            textTransform: 'uppercase',
+                            fontSize: { xs: '0.5rem', sm: '0.5rem' }
+                          }}
+                        >
+                          School Management System
+                        </Typography>
+                      </Box>
+                    </Box>
                   </Grid>
                   <Grid size={12}>
                     <Grid container direction={{ xs: 'column-reverse', md: 'row' }} sx={{ alignItems: 'center', justifyContent: 'center' }}>

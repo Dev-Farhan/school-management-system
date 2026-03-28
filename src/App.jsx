@@ -7,19 +7,25 @@ import router from 'routes';
 import NavigationScroll from 'layout/NavigationScroll';
 
 import ThemeCustomization from 'themes';
-
-// auth provider
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from './contexts/AuthContext';
+import { SessionProvider } from './contexts/SessionContext';
 
 // ==============================|| APP ||============================== //
 
 export default function App() {
   return (
-    <ThemeCustomization>
-      <NavigationScroll>
-        <>
-          <RouterProvider router={router} />
-        </>
-      </NavigationScroll>
-    </ThemeCustomization>
+    <AuthProvider>
+      <SessionProvider>
+      <ThemeCustomization>
+        <NavigationScroll>
+          <>
+            <RouterProvider router={router} />
+          </>
+        </NavigationScroll>
+        <Toaster position="bottom-right" />
+      </ThemeCustomization>
+      </SessionProvider>
+    </AuthProvider>
   );
 }

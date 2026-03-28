@@ -5,9 +5,13 @@ import App from 'App';
 import * as serviceWorker from 'serviceWorker';
 import reportWebVitals from 'reportWebVitals';
 import { ConfigProvider } from 'contexts/ConfigContext';
+import { setupSupabaseInterceptors } from 'utils/supabaseInterceptor';
 
 // style + assets
 import 'assets/scss/style.scss';
+
+// Setup Supabase interceptors for session management
+setupSupabaseInterceptors();
 
 // google-fonts
 import '@fontsource/roboto/400.css';

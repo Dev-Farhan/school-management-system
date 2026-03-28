@@ -3,13 +3,14 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-
+import React, { useState, useEffect } from 'react';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 // project imports
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
-
+import { useSession } from '../../../contexts/SessionContext'
 import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 
 // assets
@@ -23,6 +24,22 @@ export default function Header() {
 
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
+  const { selectedSession, setSelectedSession } = useSession();
+  const [sessions, setSessions] = useState([]);
+
+  useEffect(() => {
+    // Fetch all available years for the dropdown
+    const fetchAll = async () => {
+      const { data } = await supabase.from('sessions').select('*');
+      setSessions(data || []);
+    };
+    fetchAll();
+  }, []);
+
+  const handleChange = (e) => {
+    const newSession = sessions.find(s => s.id === e.target.value);
+    setSelectedSession(newSession); // Updates the WHOLE app
+  };
 
   return (
     <>
@@ -56,6 +73,23 @@ export default function Header() {
       <SearchSection />
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ flexGrow: 1 }} />
+
+      <Box sx={{ minWidth: 150 }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Session Year</InputLabel>
+          <Select
+            value={selectedSession?.name || ''}
+            label="Session Year"
+            onChange={handleChange}
+          >
+            {sessions.map((s) => (
+              <MenuItem key={s.name} value={s.name}>
+                {s.name} {s.is_active ? "(Active)" : ""}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
       {/* notification */}
       <NotificationSection />
